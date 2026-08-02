@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrey André — Electronics Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --stage:#2B2620;
+    --cream:#F6EFDD;
+    --cream-2:#EFE5CC;
+    --sage:#8CA184;
+    --sage-dark:#5E7357;
+    --orange:#E68A3F;
+    --orange-dark:#B9631F;
+    --ink:#2B2620;
+    --line:#2B2620;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--stage);
+    background-image:
+      radial-gradient(circle at 15% 20%, #3a3226 0%, transparent 45%),
+      radial-gradient(circle at 85% 80%, #33392c 0%, transparent 45%);
+    color:var(--ink);
+    font-family:'Nunito Sans', sans-serif;
+    min-height:100vh;
+    display:flex; align-items:flex-start; justify-content:center;
+    padding:44px 14px;
+  }
+  h1,h2,h3,.display{font-family:'Baloo 2', sans-serif;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:inherit;}
+
+  .frame{
+    width:100%; max-width:480px;
+    background:var(--cream);
+    border:3px solid var(--ink);
+    border-radius:26px;
+    overflow:hidden;
+    box-shadow:10px 12px 0 rgba(0,0,0,.35);
+    position:relative;
+  }
+
+  /* sticker blobs decoration */
+  .blob{ position:absolute; border-radius:50%; z-index:0; opacity:.9; }
+
+  nav{
+    display:flex; border-bottom:3px solid var(--ink);
+    background:var(--cream-2); position:relative; z-index:2;
+  }
+  nav button{
+    flex:1; background:none; border:none; color:var(--sage-dark);
+    font-family:'Baloo 2', sans-serif; font-size:14px; font-weight:600;
+    padding:14px 6px; cursor:pointer;
+    border-right:2px solid var(--ink);
+  }
+  nav button:last-child{ border-right:none; }
+  nav button.active{ background:var(--orange); color:var(--cream); }
+
+  .panel{ display:none; padding:26px 22px 30px; position:relative; z-index:1; }
+  .panel.active{ display:block; animation:fade .2s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(5px);} to{opacity:1; transform:none;} }
+
+  /* HOME */
+  .avatar{
+    width:84px; height:84px; border-radius:50%; margin:6px auto 16px;
+    background:var(--sage);
+    border:3px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:34px; color:var(--cream);
+    position:relative;
+  }
+  .avatar::after{
+    content:"⚡"; position:absolute; bottom:-6px; right:-8px; font-size:22px;
+    background:var(--orange); border:2px solid var(--ink); border-radius:50%;
+    width:32px; height:32px; display:flex; align-items:center; justify-content:center;
+  }
+  .home-name{ text-align:center; font-size:24px; font-weight:700; margin-bottom:2px;}
+  .home-role{ text-align:center; color:var(--sage-dark); font-size:13.5px; margin-bottom:20px; font-weight:600;}
+
+  .goal-card{
+    background:var(--cream-2); border:2px solid var(--ink); border-radius:16px;
+    padding:16px 16px; margin-bottom:12px;
+    box-shadow:4px 4px 0 rgba(0,0,0,.15);
+  }
+  .goal-card .eyebrow{
+    display:inline-block; font-size:10.5px; color:var(--cream); letter-spacing:.04em;
+    text-transform:uppercase; margin-bottom:8px; font-family:'Baloo 2',sans-serif; font-weight:600;
+    background:var(--sage-dark); padding:3px 9px; border-radius:20px;
+  }
+  .goal-card.orange .eyebrow{ background:var(--orange-dark); }
+  .goal-card p{ font-size:13.5px; line-height:1.55; }
+  .goal-card p b{ color:var(--orange-dark); }
+
+  .pill-row{ display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; }
+  .pill{
+    font-family:'Baloo 2',sans-serif; font-size:12px; font-weight:600; padding:5px 12px;
+    background:var(--sage); color:var(--cream); border-radius:20px; border:2px solid var(--ink);
+  }
+
+  .status-strip{
+    margin-top:18px; display:flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--sage-dark);
+    border-top:2px dashed var(--ink); padding-top:14px; font-weight:600;
+  }
+  .status-strip .dot{ width:8px; height:8px; border-radius:50%; background:var(--orange); border:1.5px solid var(--ink); }
+
+  /* ABOUT */
+  .about-p{ font-size:13.5px; margin-bottom:12px; line-height:1.6; }
+  .about-p b{ color:var(--orange-dark); }
+  .role-card{
+    display:flex; gap:11px; align-items:center; background:var(--cream-2); border:2px solid var(--ink);
+    border-radius:14px; padding:12px 14px; margin-bottom:10px;
+    box-shadow:3px 3px 0 rgba(0,0,0,.15);
+  }
+  .role-card .icon{
+    width:36px; height:36px; border-radius:10px; background:var(--orange);
+    border:2px solid var(--ink);
+    display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0;
+  }
+  .role-card .t{ font-size:13.5px; font-weight:700; margin-bottom:1px; font-family:'Baloo 2',sans-serif;}
+  .role-card .d{ font-size:12px; color:var(--sage-dark); font-weight:600;}
+
+  /* PROJECTS LIST */
+  .proj-card{
+    background:var(--cream-2); border:2px solid var(--ink); border-radius:16px;
+    padding:15px 16px; margin-bottom:12px; cursor:pointer;
+    box-shadow:4px 4px 0 rgba(0,0,0,.15);
+    transition:transform .1s;
+  }
+  .proj-card:hover{ transform:translate(-2px,-2px); box-shadow:6px 6px 0 rgba(0,0,0,.2); }
+  .proj-card .top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; gap:8px;}
+  .proj-card h3{ font-size:15.5px; font-weight:700; }
+  .proj-card .badge{
+    font-family:'Baloo 2',sans-serif; font-size:10px; font-weight:600; padding:3px 9px; border-radius:20px;
+    background:var(--sage); color:var(--cream); white-space:nowrap; border:1.5px solid var(--ink);
+  }
+  .proj-card p{ font-size:12.5px; color:#4a453b; line-height:1.5; margin-bottom:8px;}
+  .proj-card .tap{ font-size:11px; font-weight:700; color:var(--orange-dark); font-family:'Baloo 2',sans-serif;}
+  .stack{ display:flex; flex-wrap:wrap; gap:6px; }
+  .stack span{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; padding:3px 8px;
+    background:var(--cream); border:1.5px solid var(--ink); border-radius:6px; color:var(--ink);
+  }
+
+  /* PROJECT DETAIL */
+  .detail-panel{ display:none; padding:0 0 30px; position:relative; z-index:1; }
+  .detail-panel.active{ display:block; animation:fade .2s ease; }
+  .detail-hero{
+    background:var(--sage); border-bottom:3px solid var(--ink); padding:20px 22px 24px;
+    position:relative;
+  }
+  .back-btn{
+    background:var(--cream); border:2px solid var(--ink); border-radius:20px;
+    font-family:'Baloo 2',sans-serif; font-weight:600; font-size:12.5px;
+    padding:6px 14px; cursor:pointer; margin-bottom:14px;
+  }
+  .detail-hero .badge{
+    font-family:'Baloo 2',sans-serif; font-size:10.5px; font-weight:600; padding:4px 10px; border-radius:20px;
+    background:var(--orange); color:var(--cream); border:1.5px solid var(--ink); display:inline-block; margin-bottom:8px;
+  }
+  .detail-hero h2{ color:var(--cream); font-size:22px; }
+  .detail-body{ padding:20px 22px 6px; }
+  .detail-body .about-p{ font-size:13.5px; }
+  .media-slot{
+    background:var(--cream-2); border:2px dashed var(--ink); border-radius:14px;
+    min-height:130px; display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--sage-dark);
+    text-align:center; padding:14px; margin-bottom:14px;
+  }
+  .dl-row{ display:flex; flex-direction:column; gap:10px; margin-top:6px; margin-bottom:6px;}
+  .dl-btn{
+    display:flex; align-items:center; gap:10px; background:var(--cream-2); border:2px solid var(--ink);
+    border-radius:12px; padding:11px 14px; font-family:'Baloo 2',sans-serif; font-weight:600; font-size:13px;
+    box-shadow:3px 3px 0 rgba(0,0,0,.15); cursor:pointer;
+  }
+  .dl-btn .ic{ width:26px; height:26px; border-radius:7px; background:var(--orange); border:1.5px solid var(--ink);
+    display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0;}
+
+  /* CONTACT */
+  .contact-link{
+    display:flex; align-items:center; gap:13px; background:var(--cream-2);
+    border:2px solid var(--ink); border-radius:14px; padding:14px 16px;
+    margin-bottom:11px; text-decoration:none; color:var(--ink);
+    box-shadow:3px 3px 0 rgba(0,0,0,.15);
+  }
+  .contact-link .icon{
+    width:38px; height:38px; border-radius:11px; background:var(--sage);
+    border:2px solid var(--ink);
+    display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0;
+  }
+  .contact-link .label{ font-size:14px; font-weight:700; font-family:'Baloo 2',sans-serif;}
+  .contact-link .sub{ font-size:12px; color:var(--sage-dark); font-weight:600;}
+
+  footer.note{
+    text-align:center; font-family:'IBM Plex Mono',monospace; font-size:10px;
+    color:var(--sage-dark); padding:16px 20px 20px; border-top:2px solid var(--ink);
+    background:var(--cream-2); position:relative; z-index:1;
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <nav>
+    <button class="tab-btn active" data-tab="home">Home</button>
+    <button class="tab-btn" data-tab="about">About</button>
+    <button class="tab-btn" data-tab="projects">Projects</button>
+    <button class="tab-btn" data-tab="contact">Contact</button>
+  </nav>
+
+  <!-- HOME -->
+  <div class="panel active" id="home">
+    <div class="avatar">A</div>
+    <div class="home-name">Andrey André</div>
+    <div class="home-role">Electronics Technician Student · PCB Layout &amp; Embedded Systems</div>
+
+    <div class="goal-card orange">
+      <div class="eyebrow">Objective</div>
+      <p>Preparing for admission to <b>Politecnico di Torino</b>, Electrical Engineering, by <b>2027/2028</b> — building the theoretical and mathematical background to match my hands-on hardware work.</p>
+    </div>
+
+    <div class="goal-card">
+      <div class="eyebrow">Right now</div>
+      <p>Técnico em Eletroeletrônica student at SENAI Jandira (Jan 2025 – Dec 2026), mentor/teacher for the SESI Jandira robotics team, and the go-to tech support ("digital influencer") for SESI's internal systems.</p>
+    </div>
+
+    <div class="pill-row">
+      <span class="pill">PCB Layout / KiCAD</span>
+      <span class="pill">ESP32 &amp; ESP-IDF</span>
+      <span class="pill">CAN Bus</span>
+      <span class="pill">Analog &amp; Digital Circuits</span>
+      <span class="pill">Automotive Electronics</span>
+    </div>
+
+    <div class="status-strip"><span class="dot"></span> OPEN TO FORMULA STUDENT — ELECTRONICS DIVISION</div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="panel" id="about">
+    <h2 style="font-size:19px; margin-bottom:14px;">About</h2>
+    <p class="about-p">I'm a Technical High School student in Electronics focused on <b>hardware design and embedded electronics</b>. My main interest sits at the intersection of microcontrollers, PCB layout, and automotive applications — how ECUs, sensor networks, and telemetry systems behave under real-world constraints.</p>
+    <p class="about-p">Rather than just assembling circuits, I focus on analyzing their physical and logical behavior: analog signal conditioning, logic circuits, reading schematics, and debugging hardware with an oscilloscope and multimeter. On the PCB side, I work on schematic capture, footprint selection, track routing, and basic EMI/signal integrity considerations for reliable boards.</p>
+    <p class="about-p">I'm also the <b>mentor and teacher for the SESI Jandira robotics team</b>, guiding beginner students through Arduino robotics — wiring, motor control, and debugging their own code.</p>
+    <p class="about-p">Right now my main goal is preparing for an Engineering degree to strengthen my theoretical and math background. Alongside that, I'm <b>open to remote junior opportunities</b> — layout design, schematic capture, or documentation support.</p>
+
+    <div class="role-card"><div class="icon">🎓</div><div><div class="t">SENAI Jandira</div><div class="d">Técnico em Eletroeletrônica · Jan 2025 – Dec 2026</div></div></div>
+    <div class="role-card"><div class="icon">🤖</div><div><div class="t">SESI Jandira</div><div class="d">Robotics Team — Mentor &amp; Teacher</div></div></div>
+    <div class="role-card"><div class="icon">🛠️</div><div><div class="t">Digital Influencer — SESI</div><div class="d">Go-to internal tech support, like an in-house IT role</div></div></div>
+    <div class="role-card"><div class="icon">🚗</div><div><div class="t">Focus Area</div><div class="d">Automotive electronics, ECUs &amp; telemetry</div></div></div>
+    <div class="role-card"><div class="icon">🎯</div><div><div class="t">Goal</div><div class="d">EE @ Politecnico di Torino, 2027/2028</div></div></div>
+
+    <div class="goal-card" style="margin-top:16px;">
+      <div class="eyebrow">Skills</div>
+      <div class="pill-row">
+        <span class="pill">KiCAD</span>
+        <span class="pill">PCB Design</span>
+        <span class="pill">CAN Bus</span>
+        <span class="pill">Telemetry</span>
+        <span class="pill">Industrial Automation</span>
+        <span class="pill">Electro-pneumatics</span>
+        <span class="pill">ESP32</span>
+        <span class="pill">Raspberry Pi</span>
+        <span class="pill">8051 / Microprocessors</span>
+        <span class="pill">C / C++ / Python</span>
+        <span class="pill">Arduino</span>
+        <span class="pill">Circuit Testing</span>
+        <span class="pill">Technical Drawing / CAD</span>
+        <span class="pill">Game Design</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS LIST -->
+  <div class="panel" id="projects">
+    <h2 style="font-size:19px; margin-bottom:14px;">Projects</h2>
+
+    <div class="proj-card" onclick="openProject('rand')">
+      <div class="top"><h3>RAND — Glove Controller</h3><span class="badge">FIRMWARE</span></div>
+      <p>BLE HID mouse emulation via gesture recognition on ESP32-C3.</p>
+      <div class="stack"><span>ESP32-C3</span><span>MPU6050</span><span>BLE HID</span></div>
+      <div class="tap" style="margin-top:8px;">Tap for full write-up →</div>
+    </div>
+
+    <div class="proj-card" onclick="openProject('irrigation')">
+      <div class="top"><h3>Auto-Irrigation System</h3><span class="badge">HARDWARE</span></div>
+      <p>ESP32-C3 + OLED + relay pump + humidity sensing in a custom enclosure.</p>
+      <div class="stack"><span>ESP32-C3</span><span>OLED</span><span>OpenSCAD</span></div>
+      <div class="tap" style="margin-top:8px;">Tap for full write-up →</div>
+    </div>
+
+    <div class="proj-card" onclick="openProject('linefollower')">
+      <div class="top"><h3>Line-Follower Robot</h3><span class="badge">ROBOTICS</span></div>
+      <p>ESP-IDF library plus MPU6050 turning and TCS3200 color sensing.</p>
+      <div class="stack"><span>ESP32</span><span>LDR</span><span>TCS3200</span></div>
+      <div class="tap" style="margin-top:8px;">Tap for full write-up →</div>
+    </div>
+
+    <div class="proj-card" onclick="openProject('fundamentals')">
+      <div class="top"><h3>Logic &amp; Signaling Exercises</h3><span class="badge">FUNDAMENTALS</span></div>
+      <p>A set of small C exercises — counters and LED "sinaleira" sequencers, including a Morse-code blinker.</p>
+      <div class="stack"><span>C</span><span>Digital Logic</span><span>LEDs</span></div>
+      <div class="tap" style="margin-top:8px;">Tap for full write-up →</div>
+    </div>
+
+    <div class="proj-card" onclick="openProject('heartled')">
+      <div class="top"><h3>Analog Heartbeat LEDs</h3><span class="badge">ANALOG</span></div>
+      <p>Zero-microcontroller build with 5 modes, real heartbeat sensing.</p>
+      <div class="stack"><span>NE555</span><span>CD4017</span><span>Proteus</span></div>
+      <div class="tap" style="margin-top:8px;">Tap for full write-up →</div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="panel" id="contact">
+    <h2 style="font-size:19px; margin-bottom:14px;">Contact</h2>
+    <a class="contact-link" href="https://github.com/Capapesto" target="_blank"><div class="icon">💻</div><div><div class="label">GitHub</div><div class="sub">github.com/Capapesto</div></div></a>
+    <a class="contact-link" href="https://br.linkedin.com/in/andrey-a-s-andr%C3%A9-592098365" target="_blank"><div class="icon">🔗</div><div><div class="label">LinkedIn</div><div class="sub">Andrey A. S. André</div></div></a>
+    <a class="contact-link" href="#"><div class="icon">✉️</div><div><div class="label">Email</div><div class="sub">you@email.com</div></div></a>
+  </div>
+
+  <!-- PROJECT DETAIL: RAND -->
+  <div class="detail-panel" id="detail-rand">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="closeProject()">← Back</button>
+      <span class="badge">FIRMWARE / WEARABLE</span>
+      <h2>RAND — Reconfigurable Articulated Node Driver</h2>
+    </div>
+    <div class="detail-body">
+      <div class="media-slot">[ video placeholder — gesture demo ]</div>
+      <p class="about-p">A wearable glove controller emulating a BLE HID mouse via gesture recognition, built on ESP32-C3 with a 4-state FSM (OFF, MOUSE_SCROLL, RECORDING, SERIAL). Includes a custom RAND Serial Protocol and a Python gesture-capture tool.</p>
+      <p class="about-p">Debugged real hardware issues: BLE pairing instability, MPU6050 drift, irregular FreeRTOS task timing. Documented in full following ABNT (NBR 14724) technical report standards.</p>
+      <div class="media-slot">[ photo placeholder — dorsal enclosure mount ]</div>
+      <div class="dl-row">
+        <div class="dl-btn"><span class="ic">📄</span> Download PDF report (placeholder)</div>
+        <div class="dl-btn"><span class="ic">▶</span> Watch demo video (placeholder)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT DETAIL: IRRIGATION -->
+  <div class="detail-panel" id="detail-irrigation">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="closeProject()">← Back</button>
+      <span class="badge">HARDWARE / ENCLOSURE</span>
+      <h2>Automatic Plant Irrigation System</h2>
+    </div>
+    <div class="detail-body">
+      <div class="media-slot">[ render placeholder — pot-clip enclosure v3 ]</div>
+      <p class="about-p">ESP32-C3 driven system with OLED display, relay-controlled pump, and humidity sensing, housed in a custom 3D-printed enclosure that clips directly onto a plant pot rim with unified wire routing.</p>
+      <p class="about-p">Full mechanical design in OpenSCAD, dimensioned to real hardware — pot rim thickness, board size, and pump diameter.</p>
+      <div class="media-slot">[ photo placeholder — assembled unit on pot ]</div>
+      <div class="dl-row">
+        <div class="dl-btn"><span class="ic">📄</span> Download OpenSCAD + docs (placeholder)</div>
+        <div class="dl-btn"><span class="ic">▶</span> Watch build video (placeholder)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT DETAIL: LINE FOLLOWER -->
+  <div class="detail-panel" id="detail-linefollower">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="closeProject()">← Back</button>
+      <span class="badge">FIRMWARE / ROBOTICS</span>
+      <h2>Line-Follower Robot</h2>
+    </div>
+    <div class="detail-body">
+      <div class="media-slot">[ photo placeholder — robot chassis + sensor array ]</div>
+      <p class="about-p">ESP-IDF/FreeRTOS line-following library built for readability by beginners: minimal API, four exposed globals, zero embedded logging or motor logic in the library layer.</p>
+      <p class="about-p">Added MPU6050-based precision turning (with delay-based fallback) and improved TCS3200 color sensing for a student team's robot, as part of my mentoring at SESI Jandira.</p>
+      <div class="media-slot">[ video placeholder — robot run ]</div>
+      <div class="dl-row">
+        <div class="dl-btn"><span class="ic">📄</span> Download library docs (placeholder)</div>
+        <div class="dl-btn"><span class="ic">▶</span> Watch run video (placeholder)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT DETAIL: FUNDAMENTALS -->
+  <div class="detail-panel" id="detail-fundamentals">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="closeProject()">← Back</button>
+      <span class="badge">FUNDAMENTALS</span>
+      <h2>Logic &amp; Signaling Exercises</h2>
+    </div>
+    <div class="detail-body">
+      <div class="media-slot">[ video placeholder — Morse blinker running ]</div>
+      <p class="about-p">A series of small, focused C exercises built early on to lock in digital logic fundamentals: an incrementing second counter, an <b>if</b>-logic police-siren blinker, and LED "sinaleira" sequencers that spell out SOS and my own name in Morse code.</p>
+      <p class="about-p">Simple by design — each one isolates a single concept (timing, conditionals, pattern encoding) before combining them into bigger projects like the line-follower and RAND.</p>
+      <div class="dl-row">
+        <div class="dl-btn"><span class="ic">📄</span> View source on GitHub (placeholder)</div>
+        <div class="dl-btn"><span class="ic">▶</span> Watch demo video (placeholder)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT DETAIL: HEART LED -->
+  <div class="detail-panel" id="detail-heartled">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="closeProject()">← Back</button>
+      <span class="badge">ANALOG ELECTRONICS</span>
+      <h2>Analog Heartbeat LED Array</h2>
+    </div>
+    <div class="detail-body">
+      <div class="media-slot">[ photo placeholder — heart-shaped LED array ]</div>
+      <p class="about-p">Zero-microcontroller analog build with five operating modes, including real heartbeat sensing and simulated PWM patterns, built from NE555, CD4017, LM358, CD4066, and 2N2222.</p>
+      <p class="about-p">Full schematic designed and walked through in Proteus under real component-library constraints — a handmade gift build.</p>
+      <div class="media-slot">[ schematic placeholder — Proteus layout ]</div>
+      <div class="dl-row">
+        <div class="dl-btn"><span class="ic">📄</span> Download schematic PDF (placeholder)</div>
+        <div class="dl-btn"><span class="ic">▶</span> Watch mode demo (placeholder)</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="note">ANDREY ANDRÉ · ELECTRONICS TECHNICIAN STUDENT</footer>
+</div>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      document.querySelectorAll('.detail-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+  function openProject(id){
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.detail-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('detail-'+id).classList.add('active');
+  }
+  function closeProject(){
+    document.querySelectorAll('.detail-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('projects').classList.add('active');
+  }
+</script>
+
+</body>
+</html>
