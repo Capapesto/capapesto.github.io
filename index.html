@@ -171,6 +171,10 @@
     font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--sage-dark);
     text-align:center; padding:14px; margin-bottom:14px;
   }
+  .pcb-img{
+    width:100%; display:block; border:2px solid var(--ink); border-radius:14px;
+    margin-bottom:14px; box-shadow:4px 4px 0 rgba(0,0,0,.15);
+  }
   .dl-row{ display:flex; flex-direction:column; gap:10px; margin-top:6px; margin-bottom:6px;}
   .dl-btn{
     display:flex; align-items:center; gap:10px; background:var(--cream-2); border:2px solid var(--ink);
@@ -278,6 +282,27 @@
   <div class="panel" id="projects">
     <h2 style="font-size:19px; margin-bottom:14px;">Projects</h2>
 
+    <div class="proj-card" onclick="openProject('ledchaser')">
+      <div class="top"><h3>LED Chaser — Wearable</h3><span class="badge">ANALOG / PCB</span></div>
+      <p>A fully analog wearable chaser (earring/keyring form factor) — 555 astable driving a CD4017 across 10 LEDs, speed control, coin-cell powered.</p>
+      <div class="stack"><span>NE555</span><span>CD4017</span><span>EasyEDA</span></div>
+      <div class="tap" style="margin-top:8px;">Tap for full write-up →</div>
+    </div>
+
+    <div class="proj-card" onclick="openProject('proximitysensor')">
+      <div class="top"><h3>Infrared Proximity Sensor</h3><span class="badge">ANALOG / PCB</span></div>
+      <p>IR emitter/receiver pair with op-amp comparator and a low-pass filter, outputting a clean 5V pulse on presence detection.</p>
+      <div class="stack"><span>Op-Amp</span><span>IR Pair</span><span>EasyEDA</span></div>
+      <div class="tap" style="margin-top:8px;">Tap for full write-up →</div>
+    </div>
+
+    <div class="proj-card" onclick="openProject('timeddriver')">
+      <div class="top"><h3>Timed Output Driver</h3><span class="badge">ANALOG / PCB</span></div>
+      <p>Trigger-in, MOSFET-driven output that stays active for an adjustable duration (~5s), with a manual test button.</p>
+      <div class="stack"><span>NE555</span><span>MOSFET</span><span>EasyEDA</span></div>
+      <div class="tap" style="margin-top:8px;">Tap for full write-up →</div>
+    </div>
+
     <div class="proj-card" onclick="openProject('rand')">
       <div class="top"><h3>RAND — Glove Controller</h3><span class="badge">FIRMWARE</span></div>
       <p>BLE HID mouse emulation via gesture recognition on ESP32-C3.</p>
@@ -320,6 +345,66 @@
     <a class="contact-link" href="https://github.com/Capapesto" target="_blank"><div class="icon">💻</div><div><div class="label">GitHub</div><div class="sub">github.com/Capapesto</div></div></a>
     <a class="contact-link" href="https://br.linkedin.com/in/andrey-a-s-andr%C3%A9-592098365" target="_blank"><div class="icon">🔗</div><div><div class="label">LinkedIn</div><div class="sub">Andrey A. S. André</div></div></a>
     <a class="contact-link" href="#"><div class="icon">✉️</div><div><div class="label">Email</div><div class="sub">you@email.com</div></div></a>
+  </div>
+
+  <!-- PROJECT DETAIL: LED CHASER -->
+  <div class="detail-panel" id="detail-ledchaser">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="closeProject()">← Back</button>
+      <span class="badge">ANALOG / PCB DESIGN</span>
+      <h2>LED Chaser — Wearable</h2>
+    </div>
+    <div class="detail-body">
+      <img class="pcb-img" src="led_chaser_pcb_3d.png" alt="LED Chaser PCB 3D render">
+      <p class="about-p">A fully analog wearable LED chaser, sized somewhere between an earring and a keychain clip. No microcontroller — a 555 astable oscillator clocks a CD4017 decade counter, sequencing 10 LEDs around the ring in a chase pattern.</p>
+      <p class="about-p">Speed is adjustable via a potentiometer feeding the 555's timing network, and the whole board runs off a coin cell (BAT1) through a discrete supply. Designed end-to-end in EasyEDA — schematic capture, footprint placement, and two-layer routing on a compact circular board.</p>
+      <img class="pcb-img" src="led_chaser_pcb_route.png" alt="LED Chaser PCB routing">
+      <img class="pcb-img" src="led_chaser_diagram.png" alt="LED Chaser schematic diagram">
+      <div class="dl-row">
+        <div class="dl-btn"><span class="ic">📄</span> Download schematic/BOM (placeholder)</div>
+        <div class="dl-btn"><span class="ic">▶</span> Watch chase pattern demo (placeholder)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT DETAIL: PROXIMITY SENSOR -->
+  <div class="detail-panel" id="detail-proximitysensor">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="closeProject()">← Back</button>
+      <span class="badge">ANALOG / PCB DESIGN</span>
+      <h2>Infrared Proximity Sensor</h2>
+    </div>
+    <div class="detail-body">
+      <img class="pcb-img" src="proximity_sensor_pcb_3d.png" alt="Proximity sensor PCB 3D render">
+      <p class="about-p">An infrared emitter/receiver pair (LED infrarrojo + phototransistor) feeds an op-amp comparator stage, which switches cleanly when an object enters range. A potentiometer sets the detection threshold on the comparator's reference input.</p>
+      <p class="about-p">A low-pass filter (RL/C1) on the output smooths switching noise before the board drives a clean 5V pulse out — designed to be dropped straight into a digital input elsewhere in a larger system.</p>
+      <img class="pcb-img" src="proximity_sensor_pcb_route.png" alt="Proximity sensor PCB routing">
+      <img class="pcb-img" src="proximity_sensor_diagram.png" alt="Proximity sensor schematic diagram">
+      <div class="dl-row">
+        <div class="dl-btn"><span class="ic">📄</span> Download schematic/BOM (placeholder)</div>
+        <div class="dl-btn"><span class="ic">▶</span> Watch detection demo (placeholder)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT DETAIL: TIMED DRIVER -->
+  <div class="detail-panel" id="detail-timeddriver">
+    <div class="detail-hero">
+      <button class="back-btn" onclick="closeProject()">← Back</button>
+      <span class="badge">ANALOG / PCB DESIGN</span>
+      <h2>Timed Output Driver</h2>
+    </div>
+    <div class="detail-body">
+      <img class="pcb-img" src="driver_temporizdo_pcb_3d.png" alt="Timed driver PCB 3D render">
+      <p class="about-p">A trigger-in, timed-output driver board: a signal on the input (or a press on the onboard test button, KEY1) fires an NE555 monostable that holds a MOSFET-switched output active for a set duration — around 5 seconds by default, adjustable via the timing resistor.</p>
+      <p class="about-p">Built around a BC547 input-conditioning stage feeding the 555, with an IRLR2905 MOSFET on the output stage for switching higher-current 12V loads from a 5V logic trigger.</p>
+      <img class="pcb-img" src="driver_temporizado_pcb_route.png" alt="Timed driver PCB routing">
+      <img class="pcb-img" src="driver_temporizado_diagram.png" alt="Timed driver schematic diagram">
+      <div class="dl-row">
+        <div class="dl-btn"><span class="ic">📄</span> Download schematic/BOM (placeholder)</div>
+        <div class="dl-btn"><span class="ic">▶</span> Watch trigger demo (placeholder)</div>
+      </div>
+    </div>
   </div>
 
   <!-- PROJECT DETAIL: RAND -->
